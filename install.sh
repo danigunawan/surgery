@@ -13,7 +13,7 @@ fi
 
 pip install mxnet-cu101
 
-cd deepinsight/insightface/RetinaFace
+cd insightface/RetinaFace
 make
 
 
