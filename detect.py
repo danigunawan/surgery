@@ -5,7 +5,7 @@ from imutils.video import VideoStream
 
 import datetime
 
-from essh_detector import ESSHDetector
+#from essh_detector import ESSHDetector
 from retinaface import RetinaFace
 import argparse
 
