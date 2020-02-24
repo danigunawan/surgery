@@ -156,6 +156,7 @@ class RetinaFaceModel:
         self.detector = RetinaFace('./model/R50', 0, gpuid, 'net3')
         self.scales = [1024, 1980]
         self.thresh = 0.8
+        print('initialized retina face model')
 
     def detect_faces(self, video, output):
         detect_faces(video, output, 300, 300, self.detect_faces_on_img)
@@ -229,6 +230,8 @@ PATIENT_TRANSFER = 'videos/patient_transfer_cut.mp4'
 def parse_args():
     parser = argparse.ArgumentParser(description='Run detectors')
     parser.add_argument('--model', help='Model', default=None, type=str)
+    parser.add_argument('--video', help='Video', default=None, type=str)
+
     args = parser.parse_args()
     return args
 
@@ -242,7 +245,8 @@ def main():
     else:
         model = DefaultModel()
 
-    model.detect_faces(BABY_VIDEO, 'baby1_{}.avi'.format(args.model))
+
+    model.detect_faces(args.video, 'baby1_{}.avi'.format(args.model))
 
 if __name__ == '__main__':
     main()
