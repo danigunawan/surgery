@@ -6,7 +6,7 @@ from imutils.video import VideoStream
 import datetime
 
 from essh.essh_detector import ESSHDetector
-
+from insightface.RetinaFace.retinaface import RetinaFace
 
 # detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
@@ -149,7 +149,52 @@ class DefaultModel:
         return image
 
 
+class RetinaFaceModel:
+    def __init__(self):
+        gpuid = 0
+        self.detector = RetinaFace('./insightface/RetinaFace/model/R50', 0, gpuid, 'net3')
+        self.scales = [1024, 1980]
+        self.thresh = 0.8
 
+    def detect_faces(self, video, output):
+        detect_faces(video, output, )
+
+
+    def detect_faces_on_img(self, image):
+        im_shape = image.shape
+        target_size = self.scales[0]
+        max_size = self.scales[1]
+        im_size_min = np.min(im_shape[0:2])
+        im_size_max = np.max(im_shape[0:2])
+        # im_scale = 1.0
+        # if im_size_min>target_size or im_size_max>max_size:
+        im_scale = float(target_size) / float(im_size_min)
+        # prevent bigger axis from being more than max_size:
+        if np.round(im_scale * im_size_max) > max_size:
+            im_scale = float(max_size) / float(im_size_max)
+        scales = [im_scale]
+        flip = False
+
+        faces, landmarks = self.detector.detect(image, self.thresh, scales=scales, do_flip=flip)
+        if faces is not None:
+            print('find', faces.shape[0], 'faces')
+            for i in range(faces.shape[0]):
+                # print('score', faces[i][4])
+                box = faces[i].astype(np.int)
+                # color = (255,0,0)
+                color = (0, 0, 255)
+                cv2.rectangle(image, (box[0], box[1]), (box[2], box[3]), color, 2)
+                if landmarks is not None:
+                    landmark5 = landmarks[i].astype(np.int)
+                    # print(landmark.shape)
+                    for l in range(landmark5.shape[0]):
+                        color = (0, 0, 255)
+                        if l == 0 or l == 3:
+                            color = (0, 255, 0)
+                        cv2.circle(image, (landmark5[l][0], landmark5[l][1]), 1, color, 2)
+
+        print(image.shape)
+        return image
 
 VIDEO_ROOT = 'videos/'
 IMAGE_ROOT = 'images/'
@@ -172,7 +217,7 @@ PATIENT_TRANSFER = 'videos/patient_transfer_cut.mp4'
 # total_time = esshModel.detect_faces(PATIENT_TRANSFER, 'patient_transfer_essh.avi')
 # print('total time: {} seconds'.format(total_time))
 
-dsfdModel = DSFDModel()
-result = dsfdModel.forward(cv2.imread(IMAGE_ROOT + 'lera.png'))
+# dsfdModel = DSFDModel()
+# result = dsfdModel.forward(cv2.imread(IMAGE_ROOT + 'lera.png'))
 
-print(result)
+# print(result)
