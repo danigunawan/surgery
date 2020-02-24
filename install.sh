@@ -35,8 +35,9 @@ if (ls | grep enhanced); then
 fi
 
 mkdir -p videos images
-touch insightface/__init__.py
-touch insightface/RetinaFace/__init__.py
+
+cp detect.py insightface/RetinaFace
+cp detect.py essh
 
 
 # download video baby1

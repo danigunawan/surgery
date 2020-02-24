@@ -5,8 +5,9 @@ from imutils.video import VideoStream
 
 import datetime
 
-#from essh.essh_detector import ESSHDetector
-from insightface.RetinaFace.retinaface import RetinaFace
+from essh_detector import ESSHDetector
+from retinaface import RetinaFace
+import argparse
 
 # detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
 
@@ -152,7 +153,7 @@ class DefaultModel:
 class RetinaFaceModel:
     def __init__(self):
         gpuid = 0
-        self.detector = RetinaFace('./insightface/RetinaFace/model/R50', 0, gpuid, 'net3')
+        self.detector = RetinaFace('./model/R50', 0, gpuid, 'net3')
         self.scales = [1024, 1980]
         self.thresh = 0.8
 
@@ -221,3 +222,30 @@ PATIENT_TRANSFER = 'videos/patient_transfer_cut.mp4'
 # result = dsfdModel.forward(cv2.imread(IMAGE_ROOT + 'lera.png'))
 
 # print(result)
+
+
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Train RetinaFace')
+    parser.add_argument('--model', help='end epoch of training', default=None, type=int)
+    parser.add_argument('--lr', help='base learning rate', default=default.lr, type=float)
+    parser.add_argument('--lr_step', help='learning rate steps (in epoch)', default=default.lr_step, type=str)
+    parser.add_argument('--wd', help='weight decay', default=default.wd, type=float)
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    args = parse_args()
+    if args.model == 'retina':
+        model = RetinaFaceModel()
+    elif args.model == 'essh':
+        model = ESSHModel()
+    else:
+        model = DefaultModel()
+
+    model.detect_faces(BABY_VIDEO, 'baby1_{}.avi'.format(args.model))
+
+if __name__ == '__main__':
+    main()
