@@ -159,7 +159,7 @@ class RetinaFaceModel:
         print('initialized retina face model')
 
     def detect_faces(self, video, output):
-        detect_faces(video, output, 300, 300, self.detect_faces_on_img)
+        detect_faces(video, output, 640, 360, self.detect_faces_on_img)
 
 
     def detect_faces_on_img(self, image):
