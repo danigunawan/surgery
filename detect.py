@@ -5,7 +5,7 @@ from imutils.video import VideoStream
 
 import datetime
 
-from essh.essh_detector import ESSHDetector
+#from essh.essh_detector import ESSHDetector
 from insightface.RetinaFace.retinaface import RetinaFace
 
 # detector = cv2.dnn.readNetFromCaffe(protoPath, modelPath)
