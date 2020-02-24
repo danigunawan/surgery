@@ -44,7 +44,7 @@ class ESSHModel:
         self.total_time = 0
         self.scales = [1200, 1600]
         self.t = 10
-        self.esshDetector = ESSHDetector('./essh/model/essh-r50', 0, ctx_id=0)
+        self.esshDetector = ESSHDetector('./model/essh-r50', 0, ctx_id=0)
 
     def detect_faces(self, video, output):
         self.total_time = 0
