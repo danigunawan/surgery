@@ -25,11 +25,18 @@ else
   mv retinaface-R50.zip model
   cd model
   unzip retinaface-R50.zip
-  cd ../../..
+  cd ..
 fi
 
-mv enhanced-ssh-mxnet essh
+cd ../..
+
+if (ls | grep enhanced); then
+  mv enhanced-ssh-mxnet essh
+fi
 
 mkdir -p videos images
+touch insightface/__init__.py
+touch insightface/RetinaFace/__init__.py
+
 
 # download video baby1
