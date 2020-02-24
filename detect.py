@@ -227,11 +227,8 @@ PATIENT_TRANSFER = 'videos/patient_transfer_cut.mp4'
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Train RetinaFace')
-    parser.add_argument('--model', help='end epoch of training', default=None, type=int)
-    parser.add_argument('--lr', help='base learning rate', default=default.lr, type=float)
-    parser.add_argument('--lr_step', help='learning rate steps (in epoch)', default=default.lr_step, type=str)
-    parser.add_argument('--wd', help='weight decay', default=default.wd, type=float)
+    parser = argparse.ArgumentParser(description='Run detectors')
+    parser.add_argument('--model', help='Model', default=None, type=str)
     args = parser.parse_args()
     return args
 
