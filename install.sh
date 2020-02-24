@@ -36,8 +36,8 @@ fi
 
 mkdir -p videos images
 
-cp detect.py insightface/RetinaFace
-cp detect.py essh
+cp detect_retina.py insightface/RetinaFace
+cp detect_essh.py essh
 
 
 # download video baby1
