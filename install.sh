@@ -10,8 +10,11 @@ else
   git clone https://github.com/deepinx/enhanced-ssh-mxnet
 fi
 
-
-pip install mxnet-cu101
+if [ $1 == 'gpu' ]; then
+  pip install mxnet-cu101
+elif [ $1 == 'cpu' ]; then
+  pip install mxnet
+fi
 
 cd insightface/RetinaFace
 make
@@ -38,6 +41,5 @@ mkdir -p videos images
 
 cp detect_retina.py insightface/RetinaFace
 cp detect_essh.py essh
-
 
 # download video baby1
