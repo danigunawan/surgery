@@ -5,17 +5,16 @@ import datetime
 
 from essh_detector import ESSHDetector
 import argparse
-
+import os
 
 
 def detect_faces(video, output, w, h, detect_faces_on_img):
     out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'MJPG'), 10, (w, h))
 
-    result_video = []
     vs = cv2.VideoCapture(video)
     i = 0
 
-    while True and i < 1000:
+    while True:
         frame = vs.read()[1]
 
         if frame is None:
@@ -23,20 +22,10 @@ def detect_faces(video, output, w, h, detect_faces_on_img):
 
         if i % 3 == 0:
             frame = detect_faces_on_img(frame)
-            result_video.append(frame)
             out.write(frame)
         i += 1
 
-    for frame in result_video:
-        cv2.imshow('surgery', frame)
-        key = cv2.waitKey(100)
-
-        if key == ord('q'):
-            break
-
     out.release()
-    cv2.destroyAllWindows()
-
 
 
 class ESSHModel:
@@ -92,6 +81,8 @@ class ESSHModel:
 def parse_args():
     parser = argparse.ArgumentParser(description='Run detectors')
     parser.add_argument('--video', help='Video', default=None, type=str)
+    parser.add_argument('--vroot', help='Video root', default=None, type=str)
+    parser.add_argument('-s', help='Save video with detections directory', default=None, type=str)
 
     args = parser.parse_args()
     return args
@@ -101,7 +92,15 @@ def main():
     args = parse_args()
     model = ESSHModel()
 
-    model.detect_faces(args.video, 'baby1_{}.avi'.format('essh'))
+    if args.video is not None:
+        model.detect_faces(args.video, '{}_essh_detected.avi'.format(args.video))
+    else:
+        videos = os.listdir(args.vroot)
+
+        for video in videos:
+            print('======\nPocessing video : {}\n======'.format(video))
+            model.detect_faces(args.vroot + os.sep + video,
+                               args.s + os.sep + '{}_essh_detected.avi'.format(video[:-4]))
 
 
 if __name__ == '__main__':

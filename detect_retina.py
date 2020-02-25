@@ -10,7 +10,7 @@ def detect_faces(video, output, w, h, detect_faces_on_img):
     vs = cv2.VideoCapture(video)
     i = 0
 
-    while True and i < 1000:
+    while True:
         frame = vs.read()[1]
 
         if frame is None:
@@ -87,13 +87,13 @@ def main():
 
     if args.video is not None:
         model.detect_faces(args.video, '{}_retina_detected.avi'.format(args.video))
+    else:
+        videos = os.listdir(args.vroot)
 
-    videos = os.listdir(args.vroot)
-
-    for video in videos:
-        print('======\nPocessing video:{}\n======'.format(video))
-        model.detect_faces(args.vroot + os.sep + video,
-                           args.s + os.sep + '{}_retina_detected.avi'.format(video[:-4]))
+        for video in videos:
+            print('======\nPocessing video : {}\n======'.format(video))
+            model.detect_faces(args.vroot + os.sep + video,
+                               args.s + os.sep + '{}_retina_detected.avi'.format(video[:-4]))
 
 
 
