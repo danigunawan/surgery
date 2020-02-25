@@ -102,6 +102,7 @@ def main():
     videos = os.listdir(args.vroot)
 
     for video in videos:
+        print('======\nPocessing video:{}\n======'.format(video))
         model.detect_faces(args.vroot + os.sep + video,
                            args.s + os.sep + '{}_retina_detected.avi'.format(video[:-4]))
 
