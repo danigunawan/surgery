@@ -103,7 +103,7 @@ def main():
 
     for video in videos:
         model.detect_faces(args.vroot + os.sep + video,
-                           args.s + os.sep + '{}_retina_detected.avi'.format(video))
+                           args.s + os.sep + '{}_retina_detected.avi'.format(video[:-4]))
 
 
 
