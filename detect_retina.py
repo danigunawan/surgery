@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 from retinaface import RetinaFace
 import argparse
+import os
 
 def detect_faces(video, output, w, h, detect_faces_on_img):
     out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'MJPG'), 10, (w, h))
@@ -84,6 +85,8 @@ class RetinaFaceModel:
 def parse_args():
     parser = argparse.ArgumentParser(description='Run detectors')
     parser.add_argument('--video', help='Video', default=None, type=str)
+    parser.add_argument('--vroot', help='Video root', default=None, type=str)
+    parser.add_argument('-s', help='Save video with detections directory', default=None, type=str)
 
     args = parser.parse_args()
     return args
@@ -93,7 +96,15 @@ def main():
     args = parse_args()
     model = RetinaFaceModel()
 
-    model.detect_faces(args.video, 'baby1_{}.avi'.format('retina'))
+    if args.video is not None:
+        model.detect_faces(args.video, '{}_retina_detected.avi'.format(args.video))
+
+    videos = os.listdir(args.vroot)
+
+    for video in videos:
+        model.detect_faces(args.vroot + os.sep + video,
+                           args.s + os.sep + '{}_retina_detected.avi'.format(video))
+
 
 
 if __name__ == '__main__':
