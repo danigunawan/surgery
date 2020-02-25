@@ -7,7 +7,6 @@ import os
 def detect_faces(video, output, w, h, detect_faces_on_img):
     out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'MJPG'), 10, (w, h))
 
-    result_video = []
     vs = cv2.VideoCapture(video)
     i = 0
 
@@ -19,20 +18,10 @@ def detect_faces(video, output, w, h, detect_faces_on_img):
 
         if i % 3 == 0:
             frame = detect_faces_on_img(frame)
-            result_video.append(frame)
             out.write(frame)
         i += 1
 
-    for frame in result_video:
-        cv2.imshow('surgery', frame)
-        key = cv2.waitKey(100)
-
-        if key == ord('q'):
-            break
-
     out.release()
-    cv2.destroyAllWindows()
-
 
 class RetinaFaceModel:
     def __init__(self):
