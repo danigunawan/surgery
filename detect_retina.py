@@ -37,7 +37,6 @@ class RetinaFaceModel:
         flip = False
 
         faces, landmarks = self.detector.detect(image, self.thresh, scales=scales, do_flip=flip)
-        print(faces)
         if faces is not None:
             print('find', faces.shape[0], 'faces')
             for i in range(faces.shape[0]):
@@ -55,7 +54,6 @@ class RetinaFaceModel:
                             color = (0, 255, 0)
                         cv2.circle(image, (landmark5[l][0], landmark5[l][1]), 1, color, 2)
 
-        print(image.shape)
         return image, [(face[0], face[1], face[2] - face[0], face[3] - face[1]) for face in faces]
 
 
