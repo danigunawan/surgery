@@ -34,7 +34,7 @@ def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img, tracker
         if frame is None:
             break
 
-        if i % 1000 == 10:
+        if i % 10 == 3:
             frame, boxes = detect_faces_on_img(frame)
             for box in boxes:
                 trackers.add(cv2.TrackerKCF_create(), frame, box)

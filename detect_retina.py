@@ -7,11 +7,11 @@ import common
 
 
 class RetinaFaceModel:
-    def __init__(self, with_tracking=False):
+    def __init__(self, with_tracking=False, thresh=0.8):
         gpuid = 0
         self.detector = RetinaFace('./model/R50', 0, gpuid, 'net3')
         self.scales = [1024, 1980]
-        self.thresh = 0.8
+        self.thresh = thresh
         self.with_tracking = with_tracking
         if self.with_tracking:
             self.trackers = cv2.MultiTracker_create()
@@ -65,7 +65,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Run detectors')
     parser.add_argument('--video', help='Video', default=None, type=str)
     parser.add_argument('--vroot', help='Video root', default=None, type=str)
-    parser.add_argument('-t', help='with tracking', default=None, type=str)
+    parser.add_argument('--tracking', help='with tracking', default=None, type=str)
+    parser.add_argument('--threshold', help='threshold', default=0.8, type=float)
     parser.add_argument('-s', help='Save video with detections directory', default=None, type=str)
 
     args = parser.parse_args()
@@ -75,7 +76,7 @@ def parse_args():
 def main():
     args = parse_args()
     with_tracking = args.t is not None and args.t == 'y'
-    model = RetinaFaceModel(with_tracking)
+    model = RetinaFaceModel(with_tracking, args.threshold)
 
     if args.video is not None:
         model.detect_faces(args.video, args.s + os.sep + '{}_retina_detected.avi'.format(args.video.split('/')[-1][:-4]))
