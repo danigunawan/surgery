@@ -19,6 +19,7 @@ def detect_faces(video, output, w, h, detect_faces_on_img):
         i += 1
 
     out.release()
+    print("video saved to " + output)
 
 
 def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img, trackers):
