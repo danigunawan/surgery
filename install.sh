@@ -10,6 +10,8 @@ else
   git clone https://github.com/deepinx/enhanced-ssh-mxnet
 fi
 
+pip install opencv-contrib-python
+
 if [ $1 == 'gpu' ]; then
   pip install mxnet-cu101
 elif [ $1 == 'cpu' ]; then
