@@ -39,6 +39,7 @@ class RetinaFaceModel:
         flip = False
 
         faces, landmarks = self.detector.detect(image, self.thresh, scales=scales, do_flip=flip)
+        print(faces)
         if faces is not None:
             print('find', faces.shape[0], 'faces')
             for i in range(faces.shape[0]):
