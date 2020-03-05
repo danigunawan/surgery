@@ -29,13 +29,13 @@ def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img):
     i = 0
 
 
+    trackers = None
     while True:
         frame = vs.read()[1]
 
         if frame is None:
             break
 
-        trackers = None
         if i % 10 == 3:
             trackers = cv2.MultiTracker_create()
             frame, boxes = detect_faces_on_img(frame)
