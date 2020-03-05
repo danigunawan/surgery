@@ -3,36 +3,25 @@ import cv2
 from retinaface import RetinaFace
 import argparse
 import os
+import common
 
-def detect_faces(video, output, w, h, detect_faces_on_img):
-    out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'MJPG'), 10, (w, h))
-
-    vs = cv2.VideoCapture(video)
-    i = 0
-
-    while True:
-        frame = vs.read()[1]
-
-        if frame is None:
-            break
-
-        if i % 3 == 0:
-            frame = detect_faces_on_img(frame)
-            out.write(frame)
-        i += 1
-
-    out.release()
 
 class RetinaFaceModel:
-    def __init__(self):
+    def __init__(self, with_tracking=False):
         gpuid = 0
         self.detector = RetinaFace('./model/R50', 0, gpuid, 'net3')
         self.scales = [1024, 1980]
         self.thresh = 0.8
+        self.with_tracking = with_tracking
+        if self.with_tracking:
+            self.trackers = cv2.MultiTracker_create()
         print('initialized retina face model')
 
     def detect_faces(self, video, output):
-        detect_faces(video, output, 640, 360, self.detect_faces_on_img)
+        if self.with_tracking:
+            common.detect_faces_with_trackers(video, output, 640, 360, self.detect_faces_on_img, self.trackers)
+        else:
+            common.detect_faces(video, output, 640, 360, self.detect_faces_on_img)
 
     def detect_faces_on_img(self, image):
         im_shape = image.shape
@@ -68,13 +57,14 @@ class RetinaFaceModel:
                         cv2.circle(image, (landmark5[l][0], landmark5[l][1]), 1, color, 2)
 
         print(image.shape)
-        return image
+        return image, [face.astype(np.int) for face in faces]
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Run detectors')
     parser.add_argument('--video', help='Video', default=None, type=str)
     parser.add_argument('--vroot', help='Video root', default=None, type=str)
+    parser.add_argument('-t', help='with tracking', default=None, type=str)
     parser.add_argument('-s', help='Save video with detections directory', default=None, type=str)
 
     args = parser.parse_args()
@@ -83,7 +73,8 @@ def parse_args():
 
 def main():
     args = parse_args()
-    model = RetinaFaceModel()
+    with_tracking = args.t is not None and args.t == 'y'
+    model = RetinaFaceModel(with_tracking)
 
     if args.video is not None:
         model.detect_faces(args.video, '{}_retina_detected.avi'.format(args.video))

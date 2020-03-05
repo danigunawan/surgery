@@ -40,6 +40,12 @@ fi
 mkdir -p videos images
 
 cp detect_retina.py insightface/RetinaFace
+cp common.py insightface/RetinaFace
 cp detect_essh.py essh
+
+if (ls insightface/RetinaFace | grep __init__); then
+  echo "package already inited"
+else
+
 
 # download video baby1
