@@ -66,6 +66,7 @@ def parse_args():
     parser.add_argument('--tracking', help='with tracking', default=None, type=str)
     parser.add_argument('--threshold', help='threshold', default=0.8, type=float)
     parser.add_argument('-s', help='Save video with detections directory', default=None, type=str)
+    parser.add_argument('--save_path', help='Save video to the spec path', default=None, type=str)
 
     args = parser.parse_args()
     return args
@@ -76,15 +77,21 @@ def main():
     with_tracking = args.tracking is not None and args.tracking == 'y'
     model = RetinaFaceModel(with_tracking, args.threshold)
 
+    if args.save_path is None:
+        output_name_constructor = lambda src_video_name: args.s + os.sep + '{}_retina_detected.avi'.format(src_video_name[:-4])
+    else:
+        output_name_constructor = lambda src_video_name: '{}_retina_detected.avi'.format(args.save_path)
+
+
     if args.video is not None:
-        model.detect_faces(args.video, args.s + os.sep + '{}_retina_detected.avi'.format(args.video.split('/')[-1][:-4]))
+        model.detect_faces(args.video, output_name_constructor(args.video.split('/')[-1]))
     else:
         videos = os.listdir(args.vroot)
 
         for video in videos:
             print('======\nPocessing video : {}\n======'.format(video))
             model.detect_faces(args.vroot + os.sep + video,
-                               args.s + os.sep + '{}_retina_detected.avi'.format(video[:-4]))
+                               output_name_constructor(video))
 
 
 if __name__ == '__main__':

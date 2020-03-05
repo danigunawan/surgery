@@ -13,7 +13,7 @@ def detect_faces(video, output, w, h, detect_faces_on_img):
         if frame is None:
             break
 
-        if i % 3 == 0:
+        if True:
             frame, _ = detect_faces_on_img(frame)
             out.write(frame)
         i += 1
