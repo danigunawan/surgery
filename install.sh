@@ -46,6 +46,7 @@ cp detect_essh.py essh
 if (ls insightface/RetinaFace | grep __init__); then
   echo "package already inited"
 else
-
+  touch insightface/RetinaFace/__init__.py
+fi
 
 # download video baby1
