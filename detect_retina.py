@@ -77,7 +77,7 @@ def main():
     model = RetinaFaceModel(with_tracking)
 
     if args.video is not None:
-        model.detect_faces(args.video, '{}_retina_detected.avi'.format(args.video))
+        model.detect_faces(args.video, args.s + os.sep + '{}_retina_detected.avi'.format(args.video[:-4]))
     else:
         videos = os.listdir(args.vroot)
 
@@ -85,7 +85,6 @@ def main():
             print('======\nPocessing video : {}\n======'.format(video))
             model.detect_faces(args.vroot + os.sep + video,
                                args.s + os.sep + '{}_retina_detected.avi'.format(video[:-4]))
-
 
 
 if __name__ == '__main__':
