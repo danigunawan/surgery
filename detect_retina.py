@@ -13,13 +13,11 @@ class RetinaFaceModel:
         self.scales = [1024, 1980]
         self.thresh = thresh
         self.with_tracking = with_tracking
-        if self.with_tracking:
-            self.trackers = cv2.MultiTracker_create()
         print('initialized retina face model')
 
     def detect_faces(self, video, output):
         if self.with_tracking:
-            common.detect_faces_with_trackers(video, output, 640, 360, self.detect_faces_on_img, self.trackers)
+            common.detect_faces_with_trackers(video, output, 640, 360, self.detect_faces_on_img)
         else:
             common.detect_faces(video, output, 640, 360, self.detect_faces_on_img)
 
