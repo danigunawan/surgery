@@ -58,7 +58,7 @@ class RetinaFaceModel:
                         cv2.circle(image, (landmark5[l][0], landmark5[l][1]), 1, color, 2)
 
         print(image.shape)
-        return image, [face.astype(np.int) for face in faces]
+        return image, [(face[0], face[1], face[2], face[3]) for face in faces]
 
 
 def parse_args():
