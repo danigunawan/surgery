@@ -77,7 +77,7 @@ def main():
     model = RetinaFaceModel(with_tracking)
 
     if args.video is not None:
-        model.detect_faces(args.video, args.s + os.sep + '{}_retina_detected.avi'.format(args.video[:-4]))
+        model.detect_faces(args.video, args.s + os.sep + '{}_retina_detected.avi'.format(args.video.split('/')[-1][:-4]))
     else:
         videos = os.listdir(args.vroot)
 
