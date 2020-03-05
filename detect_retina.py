@@ -75,7 +75,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    with_tracking = args.t is not None and args.t == 'y'
+    with_tracking = args.tracking is not None and args.tracking == 'y'
     model = RetinaFaceModel(with_tracking, args.threshold)
 
     if args.video is not None:
