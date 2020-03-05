@@ -1,3 +1,4 @@
+import cv2
 
 def detect_faces(video, output, w, h, detect_faces_on_img):
     out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'MJPG'), 10, (w, h))
