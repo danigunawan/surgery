@@ -63,7 +63,7 @@ def blur(frame, box):
     blurred = cv2.blur(frame, (300, 300))
 
     mask = np.zeros(frame.shape, dtype=np.uint8)
-    mask = cv2.rectangle(mask, (box[0], box[1]), (box[2], box[3]), (255, 255, 255), 2)
+    mask = cv2.rectangle(mask, (box[0], box[1]), (box[2], box[3]), (255, 255, 255), -1)
 
     out = np.where(mask == (255, 255, 255), blurred, frame)
     print('finished blurring')
