@@ -39,7 +39,7 @@ class RetinaFaceModel:
         faces, landmarks = self.detector.detect(image, self.thresh, scales=scales, do_flip=flip)
         if faces is not None:
             for face in faces:
-                image = common.blur(image, face)
+                image = common.blur(image, face.astype(np.int))
         return image, [(face[0], face[1], face[2] - face[0], face[3] - face[1]) for face in faces]
 
 
