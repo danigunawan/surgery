@@ -57,7 +57,7 @@ def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img):
 
 
 def blur(frame, box):
-    print('started blurring')
+    # print('started blurring')
     h, w, _ = frame.shape
     boxh = box[2] - box[0]
     boxw = box[3] - box[1]
@@ -70,7 +70,7 @@ def blur(frame, box):
     mask = cv2.rectangle(mask, (box[0], box[1]), (box[2], box[3]), (255, 255, 255), -1)
 
     out = np.where(mask == (255, 255, 255), blurred, frame)
-    print('finished blurring')
+    # print('finished blurring')
     return out
 
 
