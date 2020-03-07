@@ -23,7 +23,7 @@ def detect_faces(video, output, w, h, detect_faces_on_img):
     print("video saved to " + output)
 
 
-def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img):
+def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img, fpd):
     out = cv2.VideoWriter(output, cv2.VideoWriter_fourcc(*'MJPG'), 10, (w, h))
 
     vs = cv2.VideoCapture(video)
@@ -36,7 +36,7 @@ def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img):
         if frame is None:
             break
 
-        if i % 10 == 3:
+        if i % fpd == 3:
             trackers = cv2.MultiTracker_create()
             frame, boxes = detect_faces_on_img(frame)
             for box in boxes:

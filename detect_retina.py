@@ -18,7 +18,7 @@ class RetinaFaceModel:
 
     def detect_faces(self, video, output):
         if self.with_tracking:
-            common.detect_faces_with_trackers(video, output, 640, 360, self.detect_faces_on_img)
+            common.detect_faces_with_trackers(video, output, 640, 360, self.detect_faces_on_img, self.frames_per_detection)
         else:
             common.detect_faces(video, output, 640, 360, self.detect_faces_on_img)
 
