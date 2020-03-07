@@ -29,7 +29,6 @@ def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img):
     vs = cv2.VideoCapture(video)
     i = 0
 
-
     trackers = None
     while True:
         frame = vs.read()[1]
@@ -48,8 +47,7 @@ def detect_faces_with_trackers(video, output, w, h, detect_faces_on_img):
             # loop over the bounding boxes and draw then on the frame
             for box in boxes:
                 (x, y, w, h) = [int(v) for v in box]
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
+                frame = blur(frame, (x, y, x + w, y + h))
         out.write(frame)
         i += 1
 
