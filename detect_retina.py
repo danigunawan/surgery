@@ -7,12 +7,13 @@ import common
 
 
 class RetinaFaceModel:
-    def __init__(self, with_tracking=False, thresh=0.8):
+    def __init__(self, with_tracking=False, thresh=0.8, fpd=10):
         gpuid = 0
         self.detector = RetinaFace('./model/R50', 0, gpuid, 'net3')
         self.scales = [1024, 1980]
         self.thresh = thresh
         self.with_tracking = with_tracking
+        self.frames_per_detection = fpd
         print('initialized retina face model')
 
     def detect_faces(self, video, output):
@@ -51,6 +52,7 @@ def parse_args():
     parser.add_argument('--threshold', help='threshold', default=0.8, type=float)
     parser.add_argument('-s', help='Save video with detections directory', default=None, type=str)
     parser.add_argument('--save_path', help='Save video to the spec path', default=None, type=str)
+    parser.add_argument('--fpd', help='Frames to be tracked per each detection', default=None, type=float)
 
     args = parser.parse_args()
     return args
@@ -59,13 +61,16 @@ def parse_args():
 def main():
     args = parse_args()
     with_tracking = args.tracking is not None and args.tracking == 'y'
-    model = RetinaFaceModel(with_tracking, args.threshold)
+    fpd = args.fpd
+    if fpd is None:
+        fpd = 10
+    model = RetinaFaceModel(with_tracking, args.threshold, fpd=fpd)
 
     if args.save_path is None:
-        output_name_constructor = lambda src_video_name: args.s + os.sep + '{}_retina_detected.avi'.format(src_video_name[:-4])
+        output_name_constructor = lambda src_video_name: args.s + os.sep + '{}_retina_detected.avi'.format(
+            src_video_name[:-4])
     else:
         output_name_constructor = lambda src_video_name: '{}_retina_detected.avi'.format(args.save_path)
-
 
     if args.video is not None:
         model.detect_faces(args.video, output_name_constructor(args.video.split('/')[-1]))
